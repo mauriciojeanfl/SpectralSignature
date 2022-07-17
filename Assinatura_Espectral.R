@@ -8,11 +8,11 @@ library(tidyverse)
 library(sf)
 
 # Caminho da pasta
-pathraster = setwd('C:\\Users\\mauri\\Documents\\GitHub\\AssinaturaEspectral\\Imagem')
-pathamostras = 'C:\\Users\\mauri\\Documents\\GitHub\\AssinaturaEspectral\\Amostras'
+pathraster = setwd('C:\\Users\\mauri\\Documents\\GitHub\\AssinaturaEspectral\\SpectralSignature\\Bandas')
+pathamostras = 'C:\\Users\\mauri\\Documents\\GitHub\\AssinaturaEspectral\\SpectralSignature\\Amostras'
 
 # Lista com os arquivos
-rastlist <- list.files(path = path, pattern="_20m*\\.tif", all.files=TRUE, full.names=FALSE)
+rastlist <- list.files(path = pathraster, pattern="^B", all.files=TRUE, full.names=FALSE)
 
 # Criando stack das bandas
 bandas = stack(rastlist)
@@ -38,7 +38,7 @@ ValoresReflect = cbind(valores,'Classe' = pontos$classe)
 ValoresReflect_mean = ValoresReflect %>% 
   group_by(Classe)  %>%
   summarise(across(everything(), mean, na.rm = TRUE)) %>% 
-  dplyr::select(5:11,Banda_B11_20m, Banda_B12_20m, everything())
+  dplyr::select(5:11,B11, B12, everything())
 
 # Tabela de assinatura espectral
 Tabassinatura = pivot_longer(ValoresReflect_mean,cols = names(ValoresReflect_mean)[1:9], names_to = 'Bandas',values_to = 'Reflectancia')
@@ -48,3 +48,4 @@ Tabassinatura$Bandas = factor(Tabassinatura$Bandas, levels = unique(Tabassinatur
 
 # Criando gráfico
 ggplot(Tabassinatura,aes(x=Bandas,y=Reflectancia,col=Classe, group = Classe)) + geom_point(aes(shape = Classe), size =2.5)+ geom_line(size = 1.1) + xlab('Bandas') + ylab('Reflectância (%)') + theme_classic() +   scale_colour_manual(name = "Classe",values = c("blue", "green", "brown"))
+
