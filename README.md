@@ -2,5 +2,8 @@
 
 Script para extração de assinatura espectral de classes de diferentes objetos.
 
-# RGB 
-<img src="./RGB_Amostras.png">
+O repositório contém o script, as amostras e as bandas utilizadas.
+
+## Exemplo do gráfico de assinatura espectral
+<img src="./Reflectance_chart.png">
+
